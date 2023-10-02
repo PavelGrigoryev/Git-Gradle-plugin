@@ -8,8 +8,10 @@ repositories {
 
 ext {
     groovyVersion = '4.0.14'
+    jgitVersion = '6.7.0.202309050840-r'
 }
 
 dependencies {
     implementation "org.apache.groovy:groovy:$groovyVersion"
+    implementation "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
 }
