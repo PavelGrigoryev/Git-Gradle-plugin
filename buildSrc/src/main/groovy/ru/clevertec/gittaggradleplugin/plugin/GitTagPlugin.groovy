@@ -84,7 +84,7 @@ class GitTagPlugin implements Plugin<Project> {
     private static void incrementMinorVersion(String latestTagVersion, File file) {
         def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
         result += 0.1
-        result = 'v'.concat(result.toString())
+        result = 'v' + result
         getReferenceFromGit(file, GitCommandBuilder.builder()
                 .git()
                 .tag()
@@ -95,7 +95,7 @@ class GitTagPlugin implements Plugin<Project> {
     private static void incrementMajorVersion(String latestTagVersion, File file) {
         def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
         result = Math.ceil(result)
-        result = 'v'.concat(result.toString())
+        result = 'v' + result
         getReferenceFromGit(file, GitCommandBuilder.builder()
                 .git()
                 .tag()
@@ -104,7 +104,7 @@ class GitTagPlugin implements Plugin<Project> {
     }
 
     private static void addRCPostFix(String latestTagVersion, File file) {
-        def result = latestTagVersion.concat('-rc')
+        def result = latestTagVersion + '-rc'
         getReferenceFromGit(file, GitCommandBuilder.builder()
                 .git()
                 .tag()
