@@ -1,7 +1,6 @@
 package ru.clevertec.plugin
 
 import org.eclipse.jgit.api.Git
-import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -11,8 +10,8 @@ class GitTagPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        def map = [group: 'git', type: DefaultTask]
-        project.task(map, 'gitTag') {
+        project.tasks.register('gitTag') {
+            group = 'git'
             doFirst {
                 println LOGO
             }
