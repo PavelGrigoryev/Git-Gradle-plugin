@@ -1,4 +1,4 @@
-package ru.clevertec.plugin
+package ru.clevertec.gittaggradleplugin.exception
 
 class TagNotFoundException extends RuntimeException {
 

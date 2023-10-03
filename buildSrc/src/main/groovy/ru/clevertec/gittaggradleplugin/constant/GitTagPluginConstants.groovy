@@ -1,4 +1,4 @@
-package ru.clevertec.plugin
+package ru.clevertec.gittaggradleplugin.constant
 
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
