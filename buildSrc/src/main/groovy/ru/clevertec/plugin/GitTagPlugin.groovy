@@ -17,8 +17,12 @@ class GitTagPlugin implements Plugin<Project> {
             }
             doLast {
                 try (Git git = Git.open(project.projectDir)) {
-                    def list = git.tagList().call()
-                    println list.toString()
+                    def tag = git.describe()
+                            .setTarget('HEAD')
+                            .setTags(true)
+                            .setMatch('*')
+                            .call()
+                    println tag
                 }
             }
         }
