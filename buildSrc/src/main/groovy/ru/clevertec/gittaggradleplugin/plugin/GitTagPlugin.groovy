@@ -49,19 +49,24 @@ class GitTagPlugin implements Plugin<Project> {
                     def tagNumber = latestTagVersion.find(/\d+\.\d+/).toDouble()
                     switch (branchName) {
                         case 'dev':
-                            incrementMinorVersion(tagNumber, projectDir)
+                            def tag = incrementMinorVersion(tagNumber)
+                            addTagToLocalAndRemote(tag, projectDir)
                             break
                         case 'qa':
-                            incrementMinorVersion(tagNumber, projectDir)
+                            def tag = incrementMinorVersion(tagNumber)
+                            addTagToLocalAndRemote(tag, projectDir)
                             break
                         case 'stage':
-                            addRCPostfix(tagNumber, projectDir)
+                            def tag = addRCPostfix(tagNumber)
+                            addTagToLocalAndRemote(tag, projectDir)
                             break
                         case 'master':
-                            incrementMajorVersion(tagNumber, projectDir)
+                            def tag = incrementMajorVersion(tagNumber)
+                            addTagToLocalAndRemote(tag, projectDir)
                             break
                         default:
-                            addSnapshotPostfix(tagNumber, projectDir)
+                            def tag = addSnapshotPostfix(tagNumber)
+                            addTagToLocalAndRemote(tag, projectDir)
                             break
                     }
                 }
@@ -69,32 +74,29 @@ class GitTagPlugin implements Plugin<Project> {
         }
     }
 
-    private static void incrementMinorVersion(Double tagNumber, File projectDir) {
+    private static def incrementMinorVersion(Double tagNumber) {
         tagNumber += 0.1
-        def tag = "v$tagNumber"
-        GitCommandBuilder.builder()
-                .git()
-                .tag()
-                .command(tag)
-                .execute(projectDir)
+        "v$tagNumber"
     }
 
-    private static void incrementMajorVersion(Double tagNumber, File projectDir) {
+    private static def incrementMajorVersion(Double tagNumber) {
         if (tagNumber % 1 == 0) {
             tagNumber++
         } else {
             tagNumber = Math.ceil(tagNumber)
         }
-        def tag = "v$tagNumber"
-        GitCommandBuilder.builder()
-                .git()
-                .tag()
-                .command(tag)
-                .execute(projectDir)
+        "v$tagNumber"
     }
 
-    private static void addRCPostfix(Double tagNumber, File projectDir) {
-        def tag = "v$tagNumber-rc"
+    private static def addRCPostfix(Double tagNumber) {
+        "v$tagNumber-rc"
+    }
+
+    private static def addSnapshotPostfix(Double tagNumber) {
+        "v$tagNumber-SNAPSHOT"
+    }
+
+    private static void addTagToLocalAndRemote(String tag, File projectDir) {
         GitCommandBuilder.builder()
                 .git()
                 .tag()
@@ -104,15 +106,6 @@ class GitTagPlugin implements Plugin<Project> {
                 .git()
                 .push()
                 .origin()
-                .command(tag)
-                .execute(projectDir)
-    }
-
-    private static void addSnapshotPostfix(Double tagNumber, File projectDir) {
-        def tag = "v$tagNumber-SNAPSHOT"
-        GitCommandBuilder.builder()
-                .git()
-                .tag()
                 .command(tag)
                 .execute(projectDir)
     }
