@@ -1,12 +1,11 @@
 package ru.clevertec.gittaggradleplugin.strategy.impl
 
-import ru.clevertec.gittaggradleplugin.builder.GitCommandBuilder
 import ru.clevertec.gittaggradleplugin.strategy.TagStrategy
 
 class TagExistsStrategy implements TagStrategy {
 
     @Override
-    String createTagNameByBranchName(String branchName, String latestTagVersion) {
+    String createTagName(String branchName, String latestTagVersion) {
         def tagNumber = latestTagVersion.find(/\d+\.\d+/).toDouble()
         switch (branchName) {
             case 'dev':
@@ -25,21 +24,6 @@ class TagExistsStrategy implements TagStrategy {
                 addSnapshotPostfix(tagNumber)
                 break
         }
-    }
-
-    @Override
-    void saveTagToLocalAndRemote(String tagName, File projectDir) {
-        GitCommandBuilder.builder()
-                .git()
-                .tag()
-                .command(tagName)
-                .execute(projectDir)
-        GitCommandBuilder.builder()
-                .git()
-                .push()
-                .origin()
-                .command(tagName)
-                .execute(projectDir)
     }
 
     private static def incrementMinorVersion(Double tagNumber) {

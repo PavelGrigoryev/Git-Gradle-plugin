@@ -2,8 +2,6 @@ package ru.clevertec.gittaggradleplugin.strategy
 
 interface TagStrategy {
 
-    String createTagNameByBranchName(String branchName, String latestTagVersion)
-
-    void saveTagToLocalAndRemote(String tagName, File projectDir)
+    String createTagName(String branchName, String latestTagVersion)
 
 }
