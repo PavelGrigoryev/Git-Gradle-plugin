@@ -6,6 +6,7 @@ import ru.clevertec.gittaggradleplugin.builder.GitCommandBuilder
 import ru.clevertec.gittaggradleplugin.exception.AlreadyTaggedException
 import ru.clevertec.gittaggradleplugin.exception.TagNotFoundException
 
+import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.GIT
 import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.LOGO
 
 class GitTagPlugin implements Plugin<Project> {
@@ -13,18 +14,18 @@ class GitTagPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.tasks.register('gitTag') {
-            group = 'git'
+            group = GIT
             doFirst {
                 println LOGO
             }
             doLast {
-                def file = project.projectDir
+                def projectDir = project.projectDir
                 def latestTagVersion = GitCommandBuilder.builder()
                         .git()
                         .describe()
                         .tags()
                         .abbrev(0)
-                        .execute(file)
+                        .execute(projectDir)
                 println latestTagVersion
                 if (latestTagVersion.isEmpty()) {
                     throw new TagNotFoundException('There is no tags in the project') // todo присвоить таг
@@ -33,7 +34,7 @@ class GitTagPlugin implements Plugin<Project> {
                         .git()
                         .describe()
                         .tags()
-                        .execute(file)
+                        .execute(projectDir)
                 println currentTagVersion
 
                 if (latestTagVersion == currentTagVersion) {
@@ -43,23 +44,23 @@ class GitTagPlugin implements Plugin<Project> {
                             .git()
                             .branch()
                             .showCurrent()
-                            .execute(file)
+                            .execute(projectDir)
                     println branchName
                     switch (branchName) {
                         case 'dev':
-                            incrementMinorVersion(latestTagVersion, file)
+                            incrementMinorVersion(latestTagVersion, projectDir)
                             break
                         case 'qa':
-                            incrementMinorVersion(latestTagVersion, file)
+                            incrementMinorVersion(latestTagVersion, projectDir)
                             break
                         case 'stage':
-                            addRCPostFix(latestTagVersion, file)
+                            addRCPostfix(latestTagVersion, projectDir)
                             break
                         case 'master':
-                            incrementMajorVersion(latestTagVersion, file)
+                            incrementMajorVersion(latestTagVersion, projectDir)
                             break
                         default:
-                            println 'default branch'
+                            addSnapshotPostfix(latestTagVersion, projectDir)
                             break
                     }
                 }
@@ -67,35 +68,48 @@ class GitTagPlugin implements Plugin<Project> {
         }
     }
 
-    private static void incrementMinorVersion(String latestTagVersion, File file) {
+    private static void incrementMinorVersion(String latestTagVersion, File projectDir) {
         def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
         result += 0.1
-        result = 'v' + result
+        result = "v$result"
         GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(result)
-                .execute(file)
+                .execute(projectDir)
     }
 
-    private static void incrementMajorVersion(String latestTagVersion, File file) {
+    private static void incrementMajorVersion(String latestTagVersion, File projectDir) {
         def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
-        result = Math.ceil(result)
-        result = 'v' + result
+        if (result % 1 == 0) {
+            result++
+        } else {
+            result = Math.ceil(result)
+        }
+        result = "v$result"
         GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(result)
-                .execute(file)
+                .execute(projectDir)
     }
 
-    private static void addRCPostFix(String latestTagVersion, File file) {
+    private static void addRCPostfix(String latestTagVersion, File projectDir) {
         def result = latestTagVersion + '-rc'
         GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(result)
-                .execute(file)
+                .execute(projectDir)
+    }
+
+    private static void addSnapshotPostfix(String latestTagVersion, File projectDir) {
+        def result = latestTagVersion + '-SNAPSHOT'
+        GitCommandBuilder.builder()
+                .git()
+                .tag()
+                .command(result)
+                .execute(projectDir)
     }
 
 }

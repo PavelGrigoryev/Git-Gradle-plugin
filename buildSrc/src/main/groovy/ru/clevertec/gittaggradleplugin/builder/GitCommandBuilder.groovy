@@ -47,8 +47,8 @@ class GitCommandBuilder {
         this
     }
 
-    String execute(File directory) {
-        this.commands.execute(null, directory)
+    String execute(File projectDir) {
+        this.commands.execute(null, projectDir)
                 .in
                 .text
                 .trim()
