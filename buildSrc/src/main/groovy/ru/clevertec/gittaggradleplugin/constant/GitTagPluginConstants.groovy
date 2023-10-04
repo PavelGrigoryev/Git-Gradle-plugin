@@ -1,12 +1,8 @@
 package ru.clevertec.gittaggradleplugin.constant
 
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
-
 interface GitTagPluginConstants {
 
     def LOGO = $/
-Git-Tag plugin initialized at %s
 ##############################################################################################################
 ##                                                                                                          ##
 ##     ██████╗ ██╗████████╗████████╗ █████╗  ██████╗     ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗    ##
@@ -18,7 +14,6 @@ Git-Tag plugin initialized at %s
 ##                                                                                                          ##
 ##     developed by Grigoryev Pavel                                                           version 0.1   ## 
 ##############################################################################################################/$
-            .formatted(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
 
     def GIT = 'git'
     def DESCRIBE = 'describe'
