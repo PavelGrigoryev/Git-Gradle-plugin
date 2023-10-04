@@ -23,6 +23,7 @@ class GitTagPlugin implements Plugin<Project> {
                 gitTagService.pushTagByProjectDir(projectDir)
             }
         }
+        project.tasks.build.finalizedBy 'gitTag'
     }
 
 }
