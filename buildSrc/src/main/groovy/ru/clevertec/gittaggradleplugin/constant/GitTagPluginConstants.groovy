@@ -19,4 +19,12 @@ Git-Tag plugin initialized at %s
 ###########################################################################/$
             .formatted(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
 
+    def GIT = 'git'
+    def DESCRIBE = 'describe'
+    def TAG = 'tag'
+    def TAGS = '--tags'
+    def ABBREV = '--abbrev='
+    def BRANCH = 'branch'
+    def SHOW_CURRENT = '--show-current'
+
 }

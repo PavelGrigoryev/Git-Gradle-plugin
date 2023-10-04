@@ -1,54 +1,57 @@
 package ru.clevertec.gittaggradleplugin.builder
 
+import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.*
+
 class GitCommandBuilder {
 
-    String[] commands
+    List<String> commands
 
-    private GitCommandBuilder(String[] commands) {
-        this.commands = commands
+    private GitCommandBuilder() {
+        commands = new ArrayList<>()
     }
 
     static def builder() {
-        return new GitCommandBuilder(new String[0])
+        return new GitCommandBuilder()
     }
 
     GitCommandBuilder git() {
-        command('git')
+        this.command(GIT)
     }
 
     GitCommandBuilder describe() {
-        command('describe')
+        this.command(DESCRIBE)
     }
 
     GitCommandBuilder tag() {
-        command('tag')
+        this.command(TAG)
     }
 
     GitCommandBuilder tags() {
-        command('--tags')
+        this.command(TAGS)
     }
 
     GitCommandBuilder abbrev(int number) {
-        command('--abbrev=' + number)
+        this.command(ABBREV + number)
     }
 
     GitCommandBuilder branch() {
-        command('branch')
+        this.command(BRANCH)
     }
 
     GitCommandBuilder showCurrent() {
-        command('--show-current')
+        this.command(SHOW_CURRENT)
     }
 
     GitCommandBuilder command(String command) {
-        String[] newCommands = new String[commands.length + 1]
-        System.arraycopy(commands, 0, newCommands, 0, commands.length)
-        newCommands[commands.length] = command
-        new GitCommandBuilder(newCommands)
+        this.commands.add(command)
+        this
     }
 
-    String[] build() {
-        commands
+    String execute(File directory) {
+        this.commands.execute(null, directory)
+                .in
+                .text
+                .trim()
     }
 
 }

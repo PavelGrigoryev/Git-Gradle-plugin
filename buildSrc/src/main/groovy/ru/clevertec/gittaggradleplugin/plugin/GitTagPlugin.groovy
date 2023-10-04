@@ -19,31 +19,31 @@ class GitTagPlugin implements Plugin<Project> {
             }
             doLast {
                 def file = project.projectDir
-                def latestTagVersion = getReferenceFromGit(file, GitCommandBuilder.builder()
+                def latestTagVersion = GitCommandBuilder.builder()
                         .git()
                         .describe()
                         .tags()
                         .abbrev(0)
-                        .build())
+                        .execute(file)
                 println latestTagVersion
                 if (latestTagVersion.isEmpty()) {
                     throw new TagNotFoundException('There is no tags in the project') // todo присвоить таг
                 }
-                def currentTagVersion = getReferenceFromGit(file, GitCommandBuilder.builder()
+                def currentTagVersion = GitCommandBuilder.builder()
                         .git()
                         .describe()
                         .tags()
-                        .build())
+                        .execute(file)
                 println currentTagVersion
 
                 if (latestTagVersion == currentTagVersion) {
                     throw new AlreadyTaggedException("The current state of the project is already tagged $currentTagVersion by git")
                 } else {
-                    def branchName = getReferenceFromGit(file, GitCommandBuilder.builder()
+                    def branchName = GitCommandBuilder.builder()
                             .git()
                             .branch()
                             .showCurrent()
-                            .build())
+                            .execute(file)
                     println branchName
                     switch (branchName) {
                         case 'dev':
@@ -67,49 +67,35 @@ class GitTagPlugin implements Plugin<Project> {
         }
     }
 
-    private static def getReferenceFromGit(File file, String... commands) {
-        def process = new ProcessBuilder(commands)
-                .directory(file)
-                .start()
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            def temp = ''
-            def line = new StringBuilder()
-            while ((temp = reader.readLine()) != null) {
-                line.append(temp)
-            }
-            line.toString()
-        }
-    }
-
     private static void incrementMinorVersion(String latestTagVersion, File file) {
         def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
         result += 0.1
         result = 'v' + result
-        getReferenceFromGit(file, GitCommandBuilder.builder()
+        GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(result)
-                .build())
+                .execute(file)
     }
 
     private static void incrementMajorVersion(String latestTagVersion, File file) {
         def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
         result = Math.ceil(result)
         result = 'v' + result
-        getReferenceFromGit(file, GitCommandBuilder.builder()
+        GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(result)
-                .build())
+                .execute(file)
     }
 
     private static void addRCPostFix(String latestTagVersion, File file) {
         def result = latestTagVersion + '-rc'
-        getReferenceFromGit(file, GitCommandBuilder.builder()
+        GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(result)
-                .build())
+                .execute(file)
     }
 
 }
