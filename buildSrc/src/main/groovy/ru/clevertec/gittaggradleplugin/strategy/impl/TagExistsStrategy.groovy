@@ -2,11 +2,13 @@ package ru.clevertec.gittaggradleplugin.strategy.impl
 
 import ru.clevertec.gittaggradleplugin.strategy.TagStrategy
 
+import java.math.RoundingMode
+
 class TagExistsStrategy implements TagStrategy {
 
     @Override
     String createTagName(String branchName, String latestTagVersion) {
-        def tagNumber = latestTagVersion.find(/\d+\.\d+/).toDouble()
+        def tagNumber = latestTagVersion.find(/\d+\.\d+/).toBigDecimal()
         switch (branchName) {
             case 'dev':
                 incrementMinorVersion(tagNumber)
@@ -26,25 +28,25 @@ class TagExistsStrategy implements TagStrategy {
         }
     }
 
-    private static def incrementMinorVersion(Double tagNumber) {
-        tagNumber += 0.1
+    private static def incrementMinorVersion(BigDecimal tagNumber) {
+        tagNumber = tagNumber.add(0.1G)
         "v$tagNumber"
     }
 
-    private static def incrementMajorVersion(Double tagNumber) {
-        if (tagNumber % 1 == 0) {
-            tagNumber++
+    private static def incrementMajorVersion(BigDecimal tagNumber) {
+        if (tagNumber.remainder(BigDecimal.ONE) <=> BigDecimal.ZERO) {
+            tagNumber = tagNumber.add(BigDecimal.ONE)
         } else {
-            tagNumber = Math.ceil(tagNumber)
+            tagNumber = tagNumber.setScale(0, RoundingMode.CEILING)
         }
         "v$tagNumber"
     }
 
-    private static def addRCPostfix(Double tagNumber) {
+    private static def addRCPostfix(BigDecimal tagNumber) {
         "v$tagNumber-rc"
     }
 
-    private static def addSnapshotPostfix(Double tagNumber) {
+    private static def addSnapshotPostfix(BigDecimal tagNumber) {
         "v$tagNumber-SNAPSHOT"
     }
 
