@@ -1,6 +1,7 @@
 package ru.clevertec.gittaggradleplugin.service.impl
 
 import ru.clevertec.gittaggradleplugin.exception.AlreadyTaggedException
+import ru.clevertec.gittaggradleplugin.exception.UncommittedChangesException
 import ru.clevertec.gittaggradleplugin.repository.impl.GitRepositoryImpl
 import ru.clevertec.gittaggradleplugin.service.GitTagService
 import ru.clevertec.gittaggradleplugin.strategy.impl.NoTagExistsStrategy
@@ -14,6 +15,11 @@ class GitTagServiceImpl implements GitTagService {
 
     @Override
     void pushTagByProjectDir(File projectDir) {
+        def uncommitted = gitRepository.findUncommittedChanges(projectDir)
+        if (!uncommitted.isEmpty()) {
+            def tagVersion = gitRepository.findCurrentTagVersion(projectDir)
+            throw new UncommittedChangesException("Detected uncommitted changes in :\n$tagVersion" + '.uncommitted')
+        }
         def latestTagVersion = gitRepository.findLatestTagVersion(projectDir)
         def branchName = gitRepository.findCurrentBranchName(projectDir)
         if (latestTagVersion.isEmpty()) {

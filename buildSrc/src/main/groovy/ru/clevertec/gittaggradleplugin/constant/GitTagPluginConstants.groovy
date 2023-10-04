@@ -29,5 +29,6 @@ Git-Tag plugin initialized at %s
     def SHOW_CURRENT = '--show-current'
     def PUSH = 'push'
     def ORIGIN = 'origin'
+    def DIFF = 'diff'
 
 }

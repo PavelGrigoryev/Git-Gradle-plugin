@@ -50,6 +50,10 @@ class GitCommandBuilder {
         this.command(ORIGIN)
     }
 
+    GitCommandBuilder diff() {
+        this.command(DIFF)
+    }
+
     GitCommandBuilder command(String command) {
         this.commands.add(command)
         this
