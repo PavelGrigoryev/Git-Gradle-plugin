@@ -42,6 +42,14 @@ class GitCommandBuilder {
         this.command(SHOW_CURRENT)
     }
 
+    GitCommandBuilder push() {
+        this.command(PUSH)
+    }
+
+    GitCommandBuilder origin() {
+        this.command(ORIGIN)
+    }
+
     GitCommandBuilder command(String command) {
         this.commands.add(command)
         this

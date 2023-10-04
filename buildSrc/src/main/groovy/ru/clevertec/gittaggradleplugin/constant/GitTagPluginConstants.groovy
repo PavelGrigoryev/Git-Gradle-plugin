@@ -26,5 +26,7 @@ Git-Tag plugin initialized at %s
     def ABBREV = '--abbrev='
     def BRANCH = 'branch'
     def SHOW_CURRENT = '--show-current'
+    def PUSH = 'push'
+    def ORIGIN = 'origin'
 
 }

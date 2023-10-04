@@ -100,6 +100,12 @@ class GitTagPlugin implements Plugin<Project> {
                 .tag()
                 .command(tag)
                 .execute(projectDir)
+        GitCommandBuilder.builder()
+                .git()
+                .push()
+                .origin()
+                .command(tag)
+                .execute(projectDir)
     }
 
     private static void addSnapshotPostfix(Double tagNumber, File projectDir) {
