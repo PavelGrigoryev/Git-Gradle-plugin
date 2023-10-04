@@ -46,21 +46,22 @@ class GitTagPlugin implements Plugin<Project> {
                             .showCurrent()
                             .execute(projectDir)
                     println branchName
+                    def tagNumber = latestTagVersion.find(/\d+\.\d+/).toDouble()
                     switch (branchName) {
                         case 'dev':
-                            incrementMinorVersion(latestTagVersion, projectDir)
+                            incrementMinorVersion(tagNumber, projectDir)
                             break
                         case 'qa':
-                            incrementMinorVersion(latestTagVersion, projectDir)
+                            incrementMinorVersion(tagNumber, projectDir)
                             break
                         case 'stage':
-                            addRCPostfix(latestTagVersion, projectDir)
+                            addRCPostfix(tagNumber, projectDir)
                             break
                         case 'master':
-                            incrementMajorVersion(latestTagVersion, projectDir)
+                            incrementMajorVersion(tagNumber, projectDir)
                             break
                         default:
-                            addSnapshotPostfix(latestTagVersion, projectDir)
+                            addSnapshotPostfix(tagNumber, projectDir)
                             break
                     }
                 }
@@ -68,47 +69,45 @@ class GitTagPlugin implements Plugin<Project> {
         }
     }
 
-    private static void incrementMinorVersion(String latestTagVersion, File projectDir) {
-        def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
-        result += 0.1
-        result = "v$result"
+    private static void incrementMinorVersion(Double tagNumber, File projectDir) {
+        tagNumber += 0.1
+        def tag = "v$tagNumber"
         GitCommandBuilder.builder()
                 .git()
                 .tag()
-                .command(result)
+                .command(tag)
                 .execute(projectDir)
     }
 
-    private static void incrementMajorVersion(String latestTagVersion, File projectDir) {
-        def result = latestTagVersion.find(/\d+\.\d+/).toDouble()
-        if (result % 1 == 0) {
-            result++
+    private static void incrementMajorVersion(Double tagNumber, File projectDir) {
+        if (tagNumber % 1 == 0) {
+            tagNumber++
         } else {
-            result = Math.ceil(result)
+            tagNumber = Math.ceil(tagNumber)
         }
-        result = "v$result"
+        def tag = "v$tagNumber"
         GitCommandBuilder.builder()
                 .git()
                 .tag()
-                .command(result)
+                .command(tag)
                 .execute(projectDir)
     }
 
-    private static void addRCPostfix(String latestTagVersion, File projectDir) {
-        def result = latestTagVersion + '-rc'
+    private static void addRCPostfix(Double tagNumber, File projectDir) {
+        def tag = "v$tagNumber-rc"
         GitCommandBuilder.builder()
                 .git()
                 .tag()
-                .command(result)
+                .command(tag)
                 .execute(projectDir)
     }
 
-    private static void addSnapshotPostfix(String latestTagVersion, File projectDir) {
-        def result = latestTagVersion + '-SNAPSHOT'
+    private static void addSnapshotPostfix(Double tagNumber, File projectDir) {
+        def tag = "v$tagNumber-SNAPSHOT"
         GitCommandBuilder.builder()
                 .git()
                 .tag()
-                .command(result)
+                .command(tag)
                 .execute(projectDir)
     }
 
