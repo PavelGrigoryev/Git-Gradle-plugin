@@ -34,10 +34,11 @@ class TagExistsStrategy implements TagStrategy {
     }
 
     private static def incrementMajorVersion(BigDecimal tagNumber) {
-        if (tagNumber.remainder(BigDecimal.ONE) <=> BigDecimal.ZERO) {
+        if (tagNumber.toString()[2] == '0') {
             tagNumber = tagNumber.add(BigDecimal.ONE)
         } else {
             tagNumber = tagNumber.setScale(0, RoundingMode.CEILING)
+                    .add(0.0G)
         }
         "v$tagNumber"
     }
