@@ -9,23 +9,13 @@ class TagExistsStrategy implements TagStrategy {
     @Override
     String createTagName(String branchName, String latestTagVersion) {
         def tagNumber = latestTagVersion.find(/\d+\.\d+/).toBigDecimal()
-        switch (branchName) {
-            case 'dev':
-                incrementMinorVersion(tagNumber)
-                break
-            case 'qa':
-                incrementMinorVersion(tagNumber)
-                break
-            case 'stage':
-                addRCPostfix(tagNumber)
-                break
-            case 'master':
-                incrementMajorVersion(tagNumber)
-                break
-            default:
-                addSnapshotPostfix(tagNumber)
-                break
-        }
+        def branchMap = [
+                'dev'   : incrementMinorVersion(tagNumber),
+                'qa'    : incrementMinorVersion(tagNumber),
+                'stage' : addRCPostfix(tagNumber),
+                'master': incrementMajorVersion(tagNumber)
+        ] as HashMap
+        branchMap.getOrDefault(branchName, addSnapshotPostfix(tagNumber))
     }
 
     private static def incrementMinorVersion(BigDecimal tagNumber) {
