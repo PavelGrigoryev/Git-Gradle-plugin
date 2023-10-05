@@ -2,6 +2,8 @@ package ru.clevertec.gittaggradleplugin.repository
 
 interface GitRepository {
 
+    String findGitVersion(File projectDir)
+
     String findUncommittedChanges(File projectDir)
 
     String findLatestTagVersion(File projectDir)

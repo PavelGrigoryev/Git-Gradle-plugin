@@ -6,6 +6,14 @@ import ru.clevertec.gittaggradleplugin.repository.GitRepository
 class GitRepositoryImpl implements GitRepository {
 
     @Override
+    String findGitVersion(File projectDir) {
+        GitCommandBuilder.builder()
+                .git()
+                .version()
+                .execute(projectDir)
+    }
+
+    @Override
     String findUncommittedChanges(File projectDir) {
         GitCommandBuilder.builder()
                 .git()

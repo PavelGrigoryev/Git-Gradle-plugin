@@ -16,6 +16,7 @@ interface GitTagPluginConstants {
 ##############################################################################################################/$
 
     def GIT = 'git'
+    def VERSION = 'version'
     def DESCRIBE = 'describe'
     def TAG = 'tag'
     def TAGS = '--tags'

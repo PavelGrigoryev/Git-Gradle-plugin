@@ -1,6 +1,7 @@
 package ru.clevertec.gittaggradleplugin.service.impl
 
 import ru.clevertec.gittaggradleplugin.exception.AlreadyTaggedException
+import ru.clevertec.gittaggradleplugin.exception.GitNotFoundException
 import ru.clevertec.gittaggradleplugin.exception.UncommittedChangesException
 import ru.clevertec.gittaggradleplugin.repository.impl.GitRepositoryImpl
 import ru.clevertec.gittaggradleplugin.service.GitTagService
@@ -15,6 +16,10 @@ class GitTagServiceImpl implements GitTagService {
 
     @Override
     void pushTagByProjectDir(File projectDir) {
+        def gitVersion = gitRepository.findGitVersion(projectDir)
+        if (gitVersion.isEmpty()) {
+            throw new GitNotFoundException('Git not found on current device')
+        }
         def uncommitted = gitRepository.findUncommittedChanges(projectDir)
         if (!uncommitted.isEmpty()) {
             def tagVersion = gitRepository.findCurrentTagVersion(projectDir)

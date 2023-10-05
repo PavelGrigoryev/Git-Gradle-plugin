@@ -18,6 +18,10 @@ class GitCommandBuilder {
         this.command(GIT)
     }
 
+    GitCommandBuilder version() {
+        this.command(VERSION)
+    }
+
     GitCommandBuilder describe() {
         this.command(DESCRIBE)
     }
