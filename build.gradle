@@ -13,3 +13,5 @@ java {
 repositories {
     mavenCentral()
 }
+
+build.finalizedBy gitTag

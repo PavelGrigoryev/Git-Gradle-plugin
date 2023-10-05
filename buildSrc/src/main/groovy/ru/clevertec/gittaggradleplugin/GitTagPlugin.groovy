@@ -1,4 +1,4 @@
-package ru.clevertec.gittaggradleplugin.plugin
+package ru.clevertec.gittaggradleplugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -23,7 +23,6 @@ class GitTagPlugin implements Plugin<Project> {
                 gitTagService.pushTagByProjectDir(projectDir)
             }
         }
-        project.tasks.build.finalizedBy 'gitTag'
     }
 
 }
