@@ -18,7 +18,10 @@ class GitTagServiceImpl implements GitTagService {
         def uncommitted = gitRepository.findUncommittedChanges(projectDir)
         if (!uncommitted.isEmpty()) {
             def tagVersion = gitRepository.findCurrentTagVersion(projectDir)
-            throw new UncommittedChangesException("Detected uncommitted changes in :\n$tagVersion" + '.uncommitted')
+            def exceptionMessage = tagVersion.isEmpty()
+                    ? 'Detected uncommitted changes in repository without tags'
+                    : "Detected uncommitted changes in :\n$tagVersion" + '.uncommitted'
+            throw new UncommittedChangesException(exceptionMessage)
         }
         def latestTagVersion = gitRepository.findLatestTagVersion(projectDir)
         def branchName = gitRepository.findCurrentBranchName(projectDir)
