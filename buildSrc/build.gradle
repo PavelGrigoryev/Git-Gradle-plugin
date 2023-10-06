@@ -1,6 +1,11 @@
 plugins {
     id 'groovy'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
 }
+
+group = 'by.grigoryev.pavel.git-tag-plugin'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -12,4 +17,13 @@ ext {
 
 dependencies {
     implementation "org.apache.groovy:groovy:$groovyVersion"
+}
+
+gradlePlugin {
+    plugins {
+        gitTagPlugin {
+            id = 'by.grigoryev.pavel.git-tag-plugin'
+            implementationClass = 'ru.clevertec.gittaggradleplugin.GitTagPlugin'
+        }
+    }
 }
