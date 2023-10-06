@@ -7,13 +7,23 @@ class NoTagExistsStrategy implements TagStrategy {
     @Override
     String createTagName(String branchName, String latestTagVersion) {
         latestTagVersion = 'v0.1'
-        def branchMap = [
-                'dev'   : latestTagVersion,
-                'qa'    : latestTagVersion,
-                'stage' : "$latestTagVersion-rc",
-                'master': latestTagVersion
-        ] as HashMap
-        branchMap.getOrDefault(branchName, "$latestTagVersion-SNAPSHOT")
+        switch (branchName) {
+            case 'dev':
+                latestTagVersion
+                break
+            case 'qa':
+                latestTagVersion
+                break
+            case 'stage':
+                "$latestTagVersion-rc"
+                break
+            case 'master':
+                latestTagVersion
+                break
+            default:
+                "$latestTagVersion-SNAPSHOT"
+                break
+        }
     }
 
 }
