@@ -9,17 +9,12 @@ import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.LOG
 
 class GitTagPlugin implements Plugin<Project> {
 
-    def gitTagService = new GitTagServiceImpl()
-
     @Override
     void apply(Project project) {
-        project.tasks.register('gitTag') {
+        project.tasks.register('pushTag', GitTagServiceImpl) {
             group = GIT
             doFirst {
                 println LOGO
-            }
-            doLast {
-                gitTagService.pushTag()
             }
         }
     }

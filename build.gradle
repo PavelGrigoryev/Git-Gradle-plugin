@@ -14,4 +14,4 @@ repositories {
     mavenCentral()
 }
 
-build.finalizedBy gitTag
+build.finalizedBy pushTag

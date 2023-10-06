@@ -1,5 +1,8 @@
 package ru.clevertec.gittaggradleplugin.service.impl
 
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.TaskAction
 import ru.clevertec.gittaggradleplugin.exception.AlreadyTaggedException
 import ru.clevertec.gittaggradleplugin.exception.GitNotFoundException
 import ru.clevertec.gittaggradleplugin.exception.UncommittedChangesException
@@ -8,13 +11,17 @@ import ru.clevertec.gittaggradleplugin.factory.impl.TagExistsFactory
 import ru.clevertec.gittaggradleplugin.repository.impl.GitRepositoryImpl
 import ru.clevertec.gittaggradleplugin.service.GitTagService
 
-class GitTagServiceImpl implements GitTagService {
+class GitTagServiceImpl extends DefaultTask implements GitTagService {
 
+    @Input
     def gitRepository = new GitRepositoryImpl()
+    @Input
     def noTagExistsFactory = new NoTagExistsFactory()
+    @Input
     def tagExistsFactory = new TagExistsFactory()
 
     @Override
+    @TaskAction
     void pushTag() {
         def gitVersion = gitRepository.findGitVersion()
         if (gitVersion.isEmpty()) {
