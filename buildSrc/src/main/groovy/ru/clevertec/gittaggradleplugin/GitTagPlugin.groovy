@@ -19,7 +19,7 @@ class GitTagPlugin implements Plugin<Project> {
                 println LOGO
             }
             doLast {
-                gitTagService.pushTagByProjectDir()
+                gitTagService.pushTag()
             }
         }
     }

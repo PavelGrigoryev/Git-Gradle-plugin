@@ -1,8 +1,8 @@
-package ru.clevertec.gittaggradleplugin.strategy.impl
+package ru.clevertec.gittaggradleplugin.factory.impl
 
-import ru.clevertec.gittaggradleplugin.strategy.TagStrategy
+import ru.clevertec.gittaggradleplugin.factory.TagFactory
 
-class TagExistsStrategy implements TagStrategy {
+class TagExistsFactory implements TagFactory {
 
     @Override
     String createTagName(String branchName, String latestTagVersion) {
@@ -27,12 +27,12 @@ class TagExistsStrategy implements TagStrategy {
     }
 
     private static def incrementMinorVersion(String[] tagNumbers) {
-        tagNumbers[1] = (tagNumbers[1] as Integer) + 1
+        tagNumbers[1] = (tagNumbers[1] as int) + 1
         'v' + tagNumbers.join('.')
     }
 
     private static def incrementMajorVersion(String[] tagNumbers) {
-        tagNumbers[0] = (tagNumbers[0] as Integer) + 1
+        tagNumbers[0] = (tagNumbers[0] as int) + 1
         tagNumbers[1] = '0'
         'v' + tagNumbers.join('.')
     }

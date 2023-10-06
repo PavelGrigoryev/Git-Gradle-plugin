@@ -1,8 +1,8 @@
-package ru.clevertec.gittaggradleplugin.strategy.impl
+package ru.clevertec.gittaggradleplugin.factory.impl
 
-import ru.clevertec.gittaggradleplugin.strategy.TagStrategy
+import ru.clevertec.gittaggradleplugin.factory.TagFactory
 
-class NoTagExistsStrategy implements TagStrategy {
+class NoTagExistsFactory implements TagFactory {
 
     @Override
     String createTagName(String branchName, String latestTagVersion) {

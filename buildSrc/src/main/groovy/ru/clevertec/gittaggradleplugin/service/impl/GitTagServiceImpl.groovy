@@ -3,19 +3,19 @@ package ru.clevertec.gittaggradleplugin.service.impl
 import ru.clevertec.gittaggradleplugin.exception.AlreadyTaggedException
 import ru.clevertec.gittaggradleplugin.exception.GitNotFoundException
 import ru.clevertec.gittaggradleplugin.exception.UncommittedChangesException
+import ru.clevertec.gittaggradleplugin.factory.impl.NoTagExistsFactory
+import ru.clevertec.gittaggradleplugin.factory.impl.TagExistsFactory
 import ru.clevertec.gittaggradleplugin.repository.impl.GitRepositoryImpl
 import ru.clevertec.gittaggradleplugin.service.GitTagService
-import ru.clevertec.gittaggradleplugin.strategy.impl.NoTagExistsStrategy
-import ru.clevertec.gittaggradleplugin.strategy.impl.TagExistsStrategy
 
 class GitTagServiceImpl implements GitTagService {
 
     def gitRepository = new GitRepositoryImpl()
-    def noTagExistsStrategy = new NoTagExistsStrategy()
-    def tagExistsStrategy = new TagExistsStrategy()
+    def noTagExistsFactory = new NoTagExistsFactory()
+    def tagExistsFactory = new TagExistsFactory()
 
     @Override
-    void pushTagByProjectDir() {
+    void pushTag() {
         def gitVersion = gitRepository.findGitVersion()
         if (gitVersion.isEmpty()) {
             throw new GitNotFoundException('Git not found on current device')
@@ -31,7 +31,7 @@ class GitTagServiceImpl implements GitTagService {
         def latestTagVersion = gitRepository.findLatestTagVersion()
         def branchName = gitRepository.findCurrentBranchName()
         if (latestTagVersion.isEmpty()) {
-            def tagName = noTagExistsStrategy.createTagName(branchName, latestTagVersion)
+            def tagName = noTagExistsFactory.createTagName(branchName, latestTagVersion)
             gitRepository.pushTagToLocalAndOrigin(tagName)
             return
         }
@@ -39,7 +39,7 @@ class GitTagServiceImpl implements GitTagService {
         if (latestTagVersion == currentTagVersion) {
             throw new AlreadyTaggedException("The current state of the project is already tagged $currentTagVersion by git")
         } else {
-            def tagName = tagExistsStrategy.createTagName(branchName, latestTagVersion)
+            def tagName = tagExistsFactory.createTagName(branchName, latestTagVersion)
             gitRepository.pushTagToLocalAndOrigin(tagName)
         }
     }

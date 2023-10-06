@@ -1,6 +1,6 @@
-package ru.clevertec.gittaggradleplugin.strategy
+package ru.clevertec.gittaggradleplugin.factory
 
-interface TagStrategy {
+interface TagFactory {
 
     String createTagName(String branchName, String latestTagVersion)
 
