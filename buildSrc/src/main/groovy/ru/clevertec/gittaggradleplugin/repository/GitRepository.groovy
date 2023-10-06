@@ -2,16 +2,16 @@ package ru.clevertec.gittaggradleplugin.repository
 
 interface GitRepository {
 
-    String findGitVersion(File projectDir)
+    String findGitVersion()
 
-    String findUncommittedChanges(File projectDir)
+    String findUncommittedChanges()
 
-    String findLatestTagVersion(File projectDir)
+    String findLatestTagVersion()
 
-    String findCurrentTagVersion(File projectDir)
+    String findCurrentTagVersion()
 
-    String findCurrentBranchName(File projectDir)
+    String findCurrentBranchName()
 
-    void pushTagToLocalAndOrigin(String tagName, File projectDir)
+    void pushTagToLocalAndOrigin(String tagName)
 
 }

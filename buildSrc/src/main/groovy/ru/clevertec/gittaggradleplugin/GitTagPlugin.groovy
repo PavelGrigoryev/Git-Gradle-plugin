@@ -19,8 +19,7 @@ class GitTagPlugin implements Plugin<Project> {
                 println LOGO
             }
             doLast {
-                def projectDir = project.projectDir
-                gitTagService.pushTagByProjectDir(projectDir)
+                gitTagService.pushTagByProjectDir()
             }
         }
     }

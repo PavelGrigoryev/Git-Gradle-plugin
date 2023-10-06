@@ -6,62 +6,62 @@ import ru.clevertec.gittaggradleplugin.repository.GitRepository
 class GitRepositoryImpl implements GitRepository {
 
     @Override
-    String findGitVersion(File projectDir) {
+    String findGitVersion() {
         GitCommandBuilder.builder()
                 .git()
                 .version()
-                .execute(projectDir)
+                .execute()
     }
 
     @Override
-    String findUncommittedChanges(File projectDir) {
+    String findUncommittedChanges() {
         GitCommandBuilder.builder()
                 .git()
                 .diff()
-                .execute(projectDir)
+                .execute()
     }
 
     @Override
-    String findLatestTagVersion(File projectDir) {
+    String findLatestTagVersion() {
         GitCommandBuilder.builder()
                 .git()
                 .describe()
                 .tags()
                 .abbrev(0)
-                .execute(projectDir)
+                .execute()
     }
 
     @Override
-    String findCurrentTagVersion(File projectDir) {
+    String findCurrentTagVersion() {
         GitCommandBuilder.builder()
                 .git()
                 .describe()
                 .tags()
-                .execute(projectDir)
+                .execute()
     }
 
     @Override
-    String findCurrentBranchName(File projectDir) {
+    String findCurrentBranchName() {
         GitCommandBuilder.builder()
                 .git()
                 .branch()
                 .showCurrent()
-                .execute(projectDir)
+                .execute()
     }
 
     @Override
-    void pushTagToLocalAndOrigin(String tagName, File projectDir) {
+    void pushTagToLocalAndOrigin(String tagName) {
         GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(tagName)
-                .execute(projectDir)
+                .execute()
         GitCommandBuilder.builder()
                 .git()
                 .push()
                 .origin()
                 .command(tagName)
-                .execute(projectDir)
+                .execute()
     }
 
 }
