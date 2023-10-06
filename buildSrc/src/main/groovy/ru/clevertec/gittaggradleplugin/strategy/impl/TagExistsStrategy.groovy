@@ -23,6 +23,7 @@ class TagExistsStrategy implements TagStrategy {
 
     private static def incrementMajorVersion(String[] tagNumbers) {
         tagNumbers[0] = (tagNumbers[0] as Integer) + 1
+        tagNumbers[1] = '0'
         'v' + tagNumbers.join('.')
     }
 
