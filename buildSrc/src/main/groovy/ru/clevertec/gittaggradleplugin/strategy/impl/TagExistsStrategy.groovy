@@ -2,43 +2,38 @@ package ru.clevertec.gittaggradleplugin.strategy.impl
 
 import ru.clevertec.gittaggradleplugin.strategy.TagStrategy
 
-import java.math.RoundingMode
-
 class TagExistsStrategy implements TagStrategy {
 
     @Override
     String createTagName(String branchName, String latestTagVersion) {
-        def tagNumber = latestTagVersion.find(/\d+\.\d+/).toBigDecimal()
+        def tagNumbers = latestTagVersion.find(/\d+\.\d+/).split('\\.')
         def branchMap = [
-                'dev'   : incrementMinorVersion(tagNumber),
-                'qa'    : incrementMinorVersion(tagNumber),
-                'stage' : addRCPostfix(tagNumber),
-                'master': incrementMajorVersion(tagNumber)
+                'dev'   : incrementMinorVersion(tagNumbers),
+                'qa'    : incrementMinorVersion(tagNumbers),
+                'stage' : addRCPostfix(tagNumbers),
+                'master': incrementMajorVersion(tagNumbers)
         ] as HashMap
-        branchMap.getOrDefault(branchName, addSnapshotPostfix(tagNumber))
+        branchMap.getOrDefault(branchName, addSnapshotPostfix(tagNumbers))
     }
 
-    private static def incrementMinorVersion(BigDecimal tagNumber) {
-        tagNumber = tagNumber.add(0.1G)
-        "v$tagNumber"
+    private static def incrementMinorVersion(String[] tagNumbers) {
+        tagNumbers[1] = (tagNumbers[1] as Integer) + 1
+        'v' + tagNumbers.join('.')
     }
 
-    private static def incrementMajorVersion(BigDecimal tagNumber) {
-        if (tagNumber.toString()[2] == '0') {
-            tagNumber = tagNumber.add(BigDecimal.ONE)
-        } else {
-            tagNumber = tagNumber.setScale(0, RoundingMode.CEILING)
-                    .add(0.0G)
-        }
-        "v$tagNumber"
+    private static def incrementMajorVersion(String[] tagNumbers) {
+        tagNumbers[0] = (tagNumbers[0] as Integer) + 1
+        'v' + tagNumbers.join('.')
     }
 
-    private static def addRCPostfix(BigDecimal tagNumber) {
-        "v$tagNumber-rc"
+    private static def addRCPostfix(String[] tagNumbers) {
+        def tagName = incrementMinorVersion(tagNumbers)
+        "$tagName-rc"
     }
 
-    private static def addSnapshotPostfix(BigDecimal tagNumber) {
-        "v$tagNumber-SNAPSHOT"
+    private static def addSnapshotPostfix(String[] tagNumbers) {
+        def tagName = incrementMinorVersion(tagNumbers)
+        "$tagName-SNAPSHOT"
     }
 
 }
