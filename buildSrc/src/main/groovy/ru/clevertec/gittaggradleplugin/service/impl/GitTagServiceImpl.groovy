@@ -40,14 +40,16 @@ class GitTagServiceImpl extends DefaultTask implements GitTagService {
         if (latestTagVersion.isEmpty()) {
             def tagName = noTagExistsFactory.createTagName(branchName, latestTagVersion)
             gitRepository.pushTagToLocalAndOrigin(tagName)
+            logger.warn "The current commit is assigned tag $tagName"
             return
         }
         def currentTagVersion = gitRepository.findCurrentTagVersion()
         if (latestTagVersion == currentTagVersion) {
-            throw new AlreadyTaggedException("The current state of the project is already tagged $currentTagVersion by git")
+            throw new AlreadyTaggedException("\nThe current state of the project is already tagged $currentTagVersion by git")
         } else {
             def tagName = tagExistsFactory.createTagName(branchName, latestTagVersion)
             gitRepository.pushTagToLocalAndOrigin(tagName)
+            logger.warn "The current commit is assigned tag $tagName"
         }
     }
 

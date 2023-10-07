@@ -14,7 +14,7 @@ class GitTagPlugin implements Plugin<Project> {
         project.tasks.register('pushTag', GitTagServiceImpl) {
             group = GIT
             doFirst {
-                println LOGO
+                logger.warn LOGO
             }
         }
     }
