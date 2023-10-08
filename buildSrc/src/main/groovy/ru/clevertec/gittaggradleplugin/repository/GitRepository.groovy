@@ -12,6 +12,8 @@ interface GitRepository {
 
     String findCurrentBranchName()
 
+    String findLatestSnapshotTagByTagVersion(String tagVersion)
+
     void pushTagToLocalAndOrigin(String tagName)
 
 }

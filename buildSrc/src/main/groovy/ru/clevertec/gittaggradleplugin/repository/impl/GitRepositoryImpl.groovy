@@ -1,6 +1,7 @@
 package ru.clevertec.gittaggradleplugin.repository.impl
 
 import ru.clevertec.gittaggradleplugin.builder.GitCommandBuilder
+import ru.clevertec.gittaggradleplugin.builder.SortOrder
 import ru.clevertec.gittaggradleplugin.repository.GitRepository
 
 class GitRepositoryImpl implements GitRepository {
@@ -47,6 +48,20 @@ class GitRepositoryImpl implements GitRepository {
                 .branch()
                 .showCurrent()
                 .execute()
+    }
+
+    @Override
+    String findLatestSnapshotTagByTagVersion(String tagVersion) {
+        GitCommandBuilder.builder()
+                .git()
+                .tag()
+                .list()
+                .command("${tagVersion.find(/v(\d+)/)}*-SNAPSHOT")
+                .sort('version:refname', SortOrder.DESC)
+                .execute()
+                .lines()
+                .findFirst()
+                .orElse(tagVersion)
     }
 
     @Override

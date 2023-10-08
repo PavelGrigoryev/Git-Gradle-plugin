@@ -27,5 +27,7 @@ interface GitTagPluginConstants {
     def PUSH = 'push'
     def ORIGIN = 'origin'
     def DIFF = 'diff'
+    def LIST = '-l'
+    def SORT  = '--sort='
 
 }

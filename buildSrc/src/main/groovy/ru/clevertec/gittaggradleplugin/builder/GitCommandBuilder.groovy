@@ -35,7 +35,7 @@ class GitCommandBuilder {
     }
 
     GitCommandBuilder abbrev(int number) {
-        this.command(ABBREV + number)
+        this.command("$ABBREV$number")
     }
 
     GitCommandBuilder branch() {
@@ -56,6 +56,14 @@ class GitCommandBuilder {
 
     GitCommandBuilder diff() {
         this.command(DIFF)
+    }
+
+    GitCommandBuilder list() {
+        this.command(LIST)
+    }
+
+    GitCommandBuilder sort(String by, SortOrder order) {
+        this.command("$SORT${order.getName()}$by")
     }
 
     GitCommandBuilder command(String command) {

@@ -1,5 +1,6 @@
 package ru.clevertec.gittaggradleplugin.factory.impl
 
+import ru.clevertec.gittaggradleplugin.factory.Branch
 import ru.clevertec.gittaggradleplugin.factory.TagFactory
 
 class NoTagExistsFactory implements TagFactory {
@@ -8,16 +9,16 @@ class NoTagExistsFactory implements TagFactory {
     String createTagName(String branchName, String latestTagVersion) {
         latestTagVersion = 'v0.1'
         switch (branchName) {
-            case 'dev':
+            case Branch.DEV.getName():
                 latestTagVersion
                 break
-            case 'qa':
+            case Branch.QA.getName():
                 latestTagVersion
                 break
-            case 'stage':
+            case Branch.STAGE.getName():
                 "$latestTagVersion-rc"
                 break
-            case 'master':
+            case Branch.MASTER.getName():
                 latestTagVersion
                 break
             default:
