@@ -26,7 +26,7 @@ class GitTagService extends DefaultTask {
             throw new GitNotFoundException('Git not found on current device')
         }
         def uncommitted = gitRepository.findUncommittedChanges()
-        if (!uncommitted.isEmpty()) {
+        if (!uncommitted.isEmpty() && project.pushTag.checkUncommitted) {
             def tagVersion = gitRepository.findCurrentTagVersion()
             def exceptionMessage = tagVersion.isEmpty()
                     ? 'Detected uncommitted changes in repository without tags'
