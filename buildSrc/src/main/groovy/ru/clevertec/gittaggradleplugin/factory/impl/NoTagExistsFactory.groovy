@@ -1,7 +1,7 @@
 package ru.clevertec.gittaggradleplugin.factory.impl
 
-import ru.clevertec.gittaggradleplugin.factory.Branch
 import ru.clevertec.gittaggradleplugin.factory.TagFactory
+import ru.clevertec.gittaggradleplugin.model.Branch
 
 import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.*
 

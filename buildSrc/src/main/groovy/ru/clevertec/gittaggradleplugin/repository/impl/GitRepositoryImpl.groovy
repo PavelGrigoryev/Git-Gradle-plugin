@@ -1,7 +1,7 @@
 package ru.clevertec.gittaggradleplugin.repository.impl
 
 import ru.clevertec.gittaggradleplugin.builder.GitCommandBuilder
-import ru.clevertec.gittaggradleplugin.builder.SortOrder
+import ru.clevertec.gittaggradleplugin.model.SortOrder
 import ru.clevertec.gittaggradleplugin.repository.GitRepository
 
 import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.SNAPSHOT

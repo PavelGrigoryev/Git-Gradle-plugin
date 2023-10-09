@@ -1,5 +1,7 @@
 package ru.clevertec.gittaggradleplugin.builder
 
+import ru.clevertec.gittaggradleplugin.model.SortOrder
+
 import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.*
 
 class GitCommandBuilder {

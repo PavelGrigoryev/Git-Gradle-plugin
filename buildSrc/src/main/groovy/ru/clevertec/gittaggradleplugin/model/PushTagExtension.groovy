@@ -1,4 +1,4 @@
-package ru.clevertec.gittaggradleplugin.service
+package ru.clevertec.gittaggradleplugin.model
 
 class PushTagExtension {
 

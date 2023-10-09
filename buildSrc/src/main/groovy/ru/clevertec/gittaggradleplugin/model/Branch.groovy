@@ -1,4 +1,4 @@
-package ru.clevertec.gittaggradleplugin.factory
+package ru.clevertec.gittaggradleplugin.model
 
 enum Branch {
 

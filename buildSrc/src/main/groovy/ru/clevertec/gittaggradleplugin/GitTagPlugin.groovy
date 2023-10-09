@@ -2,8 +2,8 @@ package ru.clevertec.gittaggradleplugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import ru.clevertec.gittaggradleplugin.model.PushTagExtension
 import ru.clevertec.gittaggradleplugin.service.GitTagService
-import ru.clevertec.gittaggradleplugin.service.PushTagExtension
 
 import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.*
 

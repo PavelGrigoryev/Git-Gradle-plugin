@@ -1,4 +1,4 @@
-package ru.clevertec.gittaggradleplugin.builder
+package ru.clevertec.gittaggradleplugin.model
 
 enum SortOrder {
 
