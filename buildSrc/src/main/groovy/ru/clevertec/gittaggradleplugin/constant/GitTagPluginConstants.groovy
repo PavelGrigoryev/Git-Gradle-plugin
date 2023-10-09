@@ -16,6 +16,11 @@ interface GitTagPluginConstants {
 ##############################################################################################################
 /$
 
+    def PUSH_TAG = 'pushTag'
+    def DEFAULT_TAG_VERSION = 'v0.1'
+    def RC = '-rc'
+    def SNAPSHOT = '-SNAPSHOT'
+
     def GIT = 'git'
     def VERSION = 'version'
     def DESCRIBE = 'describe'

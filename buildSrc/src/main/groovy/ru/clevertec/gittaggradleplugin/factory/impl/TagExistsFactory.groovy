@@ -4,6 +4,9 @@ import ru.clevertec.gittaggradleplugin.factory.Branch
 import ru.clevertec.gittaggradleplugin.factory.TagFactory
 import ru.clevertec.gittaggradleplugin.repository.impl.GitRepositoryImpl
 
+import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.RC
+import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.SNAPSHOT
+
 class TagExistsFactory implements TagFactory {
 
     def gitRepository = new GitRepositoryImpl()
@@ -48,12 +51,12 @@ class TagExistsFactory implements TagFactory {
 
     private static def addRCPostfix(String[] tagNumbers) {
         def tagName = incrementMinorVersion(tagNumbers)
-        "$tagName-rc"
+        "$tagName$RC"
     }
 
     private static def addSnapshotPostfix(String[] tagNumbers) {
         def tagName = incrementMinorVersion(tagNumbers)
-        "$tagName-SNAPSHOT"
+        "$tagName$SNAPSHOT"
     }
 
     private static def findAndSplitTagVersionByDot(String latestTagVersion) {

@@ -4,6 +4,8 @@ import ru.clevertec.gittaggradleplugin.builder.GitCommandBuilder
 import ru.clevertec.gittaggradleplugin.builder.SortOrder
 import ru.clevertec.gittaggradleplugin.repository.GitRepository
 
+import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.SNAPSHOT
+
 class GitRepositoryImpl implements GitRepository {
 
     @Override
@@ -56,7 +58,7 @@ class GitRepositoryImpl implements GitRepository {
                 .git()
                 .tag()
                 .list()
-                .command("${tagVersion.find(/v(\d+)/)}*-SNAPSHOT")
+                .command("${tagVersion.find(/v(\d+)/)}*$SNAPSHOT")
                 .sort('version:refname', SortOrder.DESC)
                 .execute()
                 .lines()
