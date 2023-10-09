@@ -1,4 +1,4 @@
-# Git-Tag plugin
+# Git-Tag plugin (код плагина в [buildSrc](buildSrc/src/main/groovy/ru/clevertec/gittaggradleplugin))
 
 ## Автор: [Grigoryev Pavel](https://pavelgrigoryev.github.io/GrigoryevPavel/)
 
