@@ -4,7 +4,6 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import ru.clevertec.gittaggradleplugin.exception.AlreadyTaggedException
-import ru.clevertec.gittaggradleplugin.exception.GitNotFoundException
 import ru.clevertec.gittaggradleplugin.exception.UncommittedChangesException
 import ru.clevertec.gittaggradleplugin.factory.impl.NoTagExistsFactory
 import ru.clevertec.gittaggradleplugin.factory.impl.TagExistsFactory
@@ -21,10 +20,6 @@ class GitTagService extends DefaultTask {
 
     @TaskAction
     void pushTag() {
-        def gitVersion = gitRepository.findGitVersion()
-        if (gitVersion.isEmpty()) {
-            throw new GitNotFoundException('Git not found on current device')
-        }
         if (project.pushTag.checkUncommitted) {
             def uncommitted = gitRepository.findUncommittedChanges()
             if (!uncommitted.isEmpty()) {
