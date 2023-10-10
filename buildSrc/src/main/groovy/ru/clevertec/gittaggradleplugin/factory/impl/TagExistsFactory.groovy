@@ -15,10 +15,12 @@ class TagExistsFactory implements TagFactory {
     String createTagName(String branchName, String latestTagVersion) {
         switch (branchName) {
             case Branch.DEV.getName():
+                latestTagVersion = gitRepository.findLatestDevAndQATagByTagVersion(latestTagVersion)
                 def tagNumbers = findAndSplitTagVersionByDot(latestTagVersion)
                 incrementMinorVersion(tagNumbers)
                 break
             case Branch.QA.getName():
+                latestTagVersion = gitRepository.findLatestDevAndQATagByTagVersion(latestTagVersion)
                 def tagNumbers = findAndSplitTagVersionByDot(latestTagVersion)
                 incrementMinorVersion(tagNumbers)
                 break

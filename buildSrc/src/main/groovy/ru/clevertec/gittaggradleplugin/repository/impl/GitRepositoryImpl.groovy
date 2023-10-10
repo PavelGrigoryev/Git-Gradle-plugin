@@ -4,6 +4,7 @@ import ru.clevertec.gittaggradleplugin.builder.GitCommandBuilder
 import ru.clevertec.gittaggradleplugin.model.SortOrder
 import ru.clevertec.gittaggradleplugin.repository.GitRepository
 
+import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.RC
 import static ru.clevertec.gittaggradleplugin.constant.GitTagPluginConstants.SNAPSHOT
 
 class GitRepositoryImpl implements GitRepository {
@@ -53,12 +54,28 @@ class GitRepositoryImpl implements GitRepository {
     }
 
     @Override
+    String findLatestDevAndQATagByTagVersion(String tagVersion) {
+        GitCommandBuilder.builder()
+                .git()
+                .tag()
+                .list()
+                .command(/${tagVersion.find(/v(\d+)/)}\.*/)
+                .sort('version:refname', SortOrder.DESC)
+                .execute()
+                .lines()
+                .filter { !it.endsWith(SNAPSHOT) }
+                .filter { !it.endsWith(RC) }
+                .findFirst()
+                .orElse(tagVersion)
+    }
+
+    @Override
     String findLatestSnapshotTagByTagVersion(String tagVersion) {
         GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .list()
-                .command("${tagVersion.find(/v(\d+)/)}*$SNAPSHOT")
+                .command(/${tagVersion.find(/v(\d+)/)}\.*$SNAPSHOT/)
                 .sort('version:refname', SortOrder.DESC)
                 .execute()
                 .lines()
@@ -67,12 +84,16 @@ class GitRepositoryImpl implements GitRepository {
     }
 
     @Override
-    void pushTagToLocalAndOrigin(String tagName) {
+    String pushTagToLocal(String tagName) {
         GitCommandBuilder.builder()
                 .git()
                 .tag()
                 .command(tagName)
                 .execute()
+    }
+
+    @Override
+    String pushTagToOrigin(String tagName) {
         GitCommandBuilder.builder()
                 .git()
                 .push()

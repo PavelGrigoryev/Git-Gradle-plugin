@@ -74,10 +74,15 @@ class GitCommandBuilder {
     }
 
     String execute() {
-        this.commands.execute()
-                .in
+        def errorBuilder = new StringBuilder()
+        def process = this.commands.execute()
+        process.consumeProcessErrorStream(errorBuilder)
+        def result = process.in
                 .text
                 .trim()
+        errorBuilder.isEmpty()
+                ? result
+                : errorBuilder.toString().trim()
     }
 
 }
